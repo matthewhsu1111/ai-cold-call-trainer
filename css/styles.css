@@ -48,3 +48,13 @@ button {
 .system {
   background-color: #ffe6e6;
 }
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.bot.speaking {
+  animation: pulse 1s infinite;
+}
