@@ -1,0 +1,17 @@
+# Ignore environment files that might contain secrets
+.env
+.env.local
+.env.*.local
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore .DS_Store files (for macOS users)
+.DS_Store
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
