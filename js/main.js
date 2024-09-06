@@ -2,15 +2,31 @@ let conversationHistory = [];
 let isListening = false;
 let isInterrupted = false;
 
-const startButton = document.getElementById('start-btn');
-const stopButton = document.getElementById('stop-btn');
-const conversationDiv = document.getElementById('conversation');
-const gradeDiv = document.getElementById('grade');
-const thinkingDiv = document.getElementById('thinking');
+let startButton, stopButton, conversationDiv, gradeDiv, thinkingDiv, addObjectionBtn, triggerWordsInput, objectionResponseInput;
 
-const addObjectionBtn = document.getElementById('add-objection-btn');
-const triggerWordsInput = document.getElementById('trigger-words');
-const objectionResponseInput = document.getElementById('objection-response');
+document.addEventListener('DOMContentLoaded', function() {
+    startButton = document.getElementById('start-btn');
+    stopButton = document.getElementById('stop-btn');
+    conversationDiv = document.getElementById('conversation');
+    gradeDiv = document.getElementById('grade');
+    thinkingDiv = document.getElementById('thinking');
+
+    addObjectionBtn = document.getElementById('add-objection-btn');
+    triggerWordsInput = document.getElementById('trigger-words');
+    objectionResponseInput = document.getElementById('objection-response');
+
+    if (addObjectionBtn) {
+        addObjectionBtn.addEventListener('click', addCustomObjection);
+    }
+
+    if (startButton) {
+        startButton.addEventListener('click', startConversation);
+    }
+
+    if (stopButton) {
+        stopButton.addEventListener('click', stopConversation);
+    }
+});
 
 function startConversation() {
     conversationHistory = [];
@@ -105,7 +121,7 @@ function displayGrade() {
     `;
 }
 
-addObjectionBtn.addEventListener('click', () => {
+function addCustomObjection() {
     const triggerWords = triggerWordsInput.value.split(',').map(word => word.trim());
     const response = objectionResponseInput.value.trim();
     
@@ -117,7 +133,4 @@ addObjectionBtn.addEventListener('click', () => {
     } else {
         alert('Please enter valid trigger words and response.');
     }
-});
-
-startButton.addEventListener('click', startConversation);
-stopButton.addEventListener('click', stopConversation);
+}
