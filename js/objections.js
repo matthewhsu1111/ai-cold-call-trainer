@@ -37,5 +37,3 @@ class ObjectionsManager {
       return null;
   }
 }
-
-const objectionsManager = new ObjectionsManager();

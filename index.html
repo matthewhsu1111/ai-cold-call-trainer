@@ -12,8 +12,18 @@
         <div id="conversation"></div>
         <div id="thinking" style="display: none;">AI is thinking...</div>
         <div id="grade"></div>
+        <div>
+            <label for="volume">AI Voice Volume:</label>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+        </div>
         <button id="start-btn">Start Conversation</button>
         <button id="stop-btn" disabled>Stop Conversation</button>
+        <div id="custom-objections">
+            <h3>Add Custom Objection</h3>
+            <input type="text" id="trigger-words" placeholder="Trigger words (comma-separated)">
+            <input type="text" id="objection-response" placeholder="Objection response">
+            <button id="add-objection-btn">Add Objection</button>
+        </div>
     </div>
     <script src="js/objections.js"></script>
     <script src="js/speechRecognition.js"></script>

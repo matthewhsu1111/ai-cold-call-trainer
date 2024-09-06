@@ -1,14 +1,16 @@
 class NLPManager {
   constructor() {
       this.openaiEndpoint = 'https://api.openai.com/v1/chat/completions';
-      this.openaiKey = ''; // We'll fetch this securely
+      this.openaiKey = ''; // You'll need to set this securely
       
-      this.rooferPersona = `You are a busy roofing contractor. You're often skeptical of new software solutions, 
-      but you're open to ideas that could genuinely improve your business. Your main concerns are typically 
-      cost, ease of use, and whether the software will actually save time or increase profits. You're not very 
-      tech-savvy, so you prefer simple, straightforward explanations. You're also quite busy and impatient. 
-      If the caller is stuttering, unclear, or wasting your time, you might interrupt them and end the call. 
-      Respond as this persona would to a salesperson cold calling about new software for your roofing business.`;
+      this.personalities = [
+          "You are a skeptical and busy roofer, hard to impress and always looking for the catch.",
+          "You are an enthusiastic roofer, open to new ideas but need clear explanations of benefits.",
+          "You are a tech-savvy roofer, interested in cutting-edge solutions but concerned about implementation costs.",
+          "You are a traditional roofer, resistant to change and prefer tried-and-true methods.",
+          "You are a growth-oriented roofer, always looking for ways to expand your business but cautious about investments."
+      ];
+      this.rooferPersona = this.personalities[0];
 
       this.interruptionThreshold = 2; // Number of poor responses before interrupting
       this.poorResponseCount = 0;
@@ -16,16 +18,33 @@ class NLPManager {
       this.objectionsManager = new ObjectionsManager();
   }
 
-  async getApiKey() {
-      const response = await fetch('/api/getOpenAIKey');
-      const data = await response.json();
-      this.openaiKey = data.key;
+  selectPersonality() {
+      this.rooferPersona = this.personalities[Math.floor(Math.random() * this.personalities.length)];
   }
 
+  async getApiKey() {
+    // Check for Vercel's build-time environment variable
+    if (typeof process !== 'undefined' && process.env && process.env.OPENAI_API_KEY) {
+        return process.env.OPENAI_API_KEY;
+    }
+    // Check for browser environment variable (if you've set it up this way)
+    else if (typeof window !== 'undefined' && window.env && window.env.OPENAI_API_KEY) {
+        return window.env.OPENAI_API_KEY;
+    }
+    else {
+        throw new Error('OpenAI API key not found in environment variables');
+    }
+}
+
   async generateResponse(conversationHistory) {
-      if (!this.openaiKey) {
-          await this.getApiKey();
-      }
+    if (!this.openaiKey) {
+        try {
+            this.openaiKey = await this.getApiKey();
+        } catch (error) {
+            console.error('Failed to get API key:', error);
+            return "I'm sorry, I'm having trouble connecting to my brain right now. Can we try again later?";
+        }
+    }
 
       // Check for interruption
       if (this.shouldInterrupt(conversationHistory)) {
@@ -33,6 +52,7 @@ class NLPManager {
           return this.generateInterruption();
       }
 
+      // Check for custom objections
       const lastUserMessage = conversationHistory[conversationHistory.length - 1];
       if (lastUserMessage.role === 'user') {
           const customObjection = this.objectionsManager.getObjection(lastUserMessage.content);
