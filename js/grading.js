@@ -31,6 +31,7 @@ class GradingSystem {
     }
 
     wasInterrupted(botMessages) {
+        if (botMessages.length === 0) return false;
         const lastMessage = botMessages[botMessages.length - 1].content.toLowerCase();
         return lastMessage.includes('goodbye') || lastMessage.includes("don't have time") || lastMessage.includes('end the call');
     }
@@ -96,8 +97,12 @@ class GradingSystem {
     }
 
     gradeClosing(lastUserMessage, lastBotMessage, grade) {
+        if (!lastUserMessage || !lastBotMessage) {
+            grade.feedback.push("The conversation ended unexpectedly.");
+            return;
+        }
         const closing = lastUserMessage.content.toLowerCase();
-        if (this.wasInterrupted(lastBotMessage)) {
+        if (this.wasInterrupted([lastBotMessage])) {
             grade.feedback.push("The roofer ended the call before you could properly close. Work on keeping their interest throughout the call.");
         } else if (closing.includes('next step') || closing.includes('follow up') || closing.includes('appointment')) {
             grade.feedback.push("Excellent job attempting to move the conversation forward.");

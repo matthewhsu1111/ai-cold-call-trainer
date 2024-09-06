@@ -14,7 +14,8 @@ class SpeechSynthesisManager {
 
     speak(text, callback) {
         if (this.synth.speaking) {
-            console.error('speechSynthesis.speaking');
+            console.log('Speech synthesis is already in progress. Waiting...');
+            setTimeout(() => this.speak(text, callback), 100);
             return;
         }
 

@@ -11,15 +11,24 @@ class SpeechRecognitionManager {
         this.recognition.onend = () => this.recognition.start();
 
         this.onResultCallback = null;
+        this.isRecognizing = false;
     }
 
     start(callback) {
+        if (this.isRecognizing) {
+            console.log('Speech recognition is already running.');
+            return;
+        }
         this.onResultCallback = callback;
+        this.isRecognizing = true;
         this.recognition.start();
     }
 
     stop() {
-        this.recognition.stop();
+        if (this.isRecognizing) {
+            this.recognition.stop();
+            this.isRecognizing = false;
+        }
     }
 
     handleResult(event) {

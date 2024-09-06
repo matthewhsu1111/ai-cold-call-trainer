@@ -23,15 +23,17 @@ class NLPManager {
   }
 
   async getApiKey() {
-    // Check for Vercel's build-time environment variable
+    console.log('Environment:', process.env);
     if (typeof process !== 'undefined' && process.env && process.env.OPENAI_API_KEY) {
+        console.log('API Key found in process.env');
         return process.env.OPENAI_API_KEY;
     }
-    // Check for browser environment variable (if you've set it up this way)
     else if (typeof window !== 'undefined' && window.env && window.env.OPENAI_API_KEY) {
+        console.log('API Key found in window.env');
         return window.env.OPENAI_API_KEY;
     }
     else {
+        console.error('OpenAI API key not found in environment variables');
         throw new Error('OpenAI API key not found in environment variables');
     }
 }
