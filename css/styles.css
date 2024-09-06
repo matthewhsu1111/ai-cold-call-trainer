@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#conversation {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#grade {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.user, .bot, .system {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.user {
+  background-color: #e6f3ff;
+}
+
+.bot {
+  background-color: #f0f0f0;
+}
+
+.system {
+  background-color: #ffe6e6;
+}
